@@ -1,0 +1,103 @@
+---
+import { getAllProducts } from "../scripts/products";
+
+const categoriesToFilter = ["Boards"]; // Replace with desired categories
+const products = await getAllProducts();
+
+console.log(products); // Check all products
+
+// Filter products by the specified categories
+const filteredProducts = products?.filter((product) =>
+  categoriesToFilter.includes(product.category)
+);
+
+console.log(filteredProducts); // Check filtered products
+---
+
+<h1>BOARDS</h1>
+<section class="product-list">
+  {
+    filteredProducts && filteredProducts.length > 0 ? (
+      filteredProducts.map((product) => (
+        <div class="produckt-card">
+          <img
+            src={product.image_url || "https://via.placeholder.com/150"}
+            alt={product.name}
+            class="product-image"
+          />
+          <h2>{product.name}</h2>
+          <p>{product.description}</p>
+          <p>{product.price}</p>
+        </div>
+      ))
+    ) : (
+      <p>No products found in the selected categories.</p>
+    )
+  }
+</section>
+
+<style>
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 2px; /* Space between grid items */
+  }
+
+  .product-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Optional: Card background */
+    text-align: center; /* Center content */
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures images fit neatly within grid cells */
+    border-radius: 5px; /* Optional: Rounded corners for images */
+  }
+
+  .product-card h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+  }
+
+  .product-card p {
+    margin: 0.5rem 0;
+    color: #555;
+  }
+
+  @media (max-width: 780px) {
+    .product-list {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-list {
+      grid-template-columns: 1fr; /* 1 column on small screens */
+    }
+  }
+
+  h2 {
+    color: #8c6b9c;
+    font-family: "exo";
+    text-align: center;
+    font-size: 4vh;
+  }
+  p {
+    color: turquoise;
+    font-family: "exo 2";
+    text-align: center;
+  }
+
+  body {
+    background-color: black;
+  }
+  h1 {
+    color: #8c6b9c; /* Optional: Text color */
+    font-size: 5rem; /* Adjust size for large heading */
+    text-align: center;
+    margin-top: 20px; /* Add some space above the title */
+  }
+</style>

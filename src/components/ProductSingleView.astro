@@ -1,0 +1,86 @@
+---
+// Import necessary functions and components
+import {
+  getAllProducts,
+  getProductById,
+  getProductImage,
+} from "../scripts/products";
+import Layout from "../layouts/Layout.astro";
+
+// 1. Generate dynamic routes
+export async function getStaticPaths() {
+  const products = await getAllProducts(); // Fetch all products
+  if (!products || products.length === 0) {
+    return [];
+  }
+
+  return products.map((product) => ({
+    params: { product: product.id.toString() },
+  }));
+}
+
+// 2. Fetch specific product data and image
+const id = Astro.params.product; // Use Astro.params to get the product ID
+const product = await getProductById(id); // Fetch product data by ID
+
+let productImageUrl = null;
+if (product?.image_path) {
+  productImageUrl = await getProductImage(product.image_path); // Fetch image if available
+}
+
+if (!product) {
+  console.error("Product not found.");
+}
+---
+
+<Layout>
+  <section class="product-single">
+    {
+      product ? (
+        <>
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
+          <p>Price: {product.price}</p>
+
+          {productImageUrl ? (
+            <img
+              src={productImageUrl}
+              alt={product.name}
+              class="product-image"
+            />
+          ) : (
+            <p>No image available</p>
+          )}
+        </>
+      ) : (
+        <p>Product not found.</p>
+      )
+    }
+  </section>
+</Layout>
+
+<style>
+  .product-single {
+    padding: 2rem;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-color: #000;
+  }
+
+  .product-image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 1rem;
+  }
+
+  h3 {
+    color: turquoise;
+    font-family: "exo 2";
+  }
+  h2 {
+    color: turquoise;
+    font-family: "Orbitron";
+    text-align: center;
+  }
+</style>
