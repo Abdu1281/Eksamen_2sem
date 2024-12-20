@@ -1,10 +1,7 @@
 import { defineConfig } from 'astro/config';
+import netlify from '@astrojs/netlify/functions';
 
 export default defineConfig({
-  output: 'static', // Ensures the site is built as a static site
-  build: {
-    format: 'directory', // Default setting for file output
-  },
-  integrations: [], // Add integrations here (e.g., Tailwind, MDX, etc.)
+  output: 'server',
+  adapter: netlify(),
 });
-
