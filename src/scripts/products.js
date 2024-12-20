@@ -51,12 +51,6 @@ export async function getProductImage(imagePath) {
   return URL.createObjectURL(data);
 }
 
-
-import { supabase } from './supabaseClient';  // Sørg for at have Supabase korrekt sat op
-
-
-import { supabase } from './supabaseClient';  // Sørg for at importere din supabaseClient korrekt
-
 export async function getProductsByIds() {
   const { data, error } = await supabase
     .from('products')  // Tabelnavnet i din Supabase-database
